@@ -48,6 +48,7 @@ contracts:
           address) preLiquidationParams)
 chains:
   - id: 8453
+    start_block: 0
     contracts:
       - name: Morpho
         address:
