@@ -5,7 +5,7 @@ name: morpho-liquidation-bot-indexer
 description: Morpho Protocol Indexer for Liquidation Bot
 contracts:
   - name: Morpho
-    abi_file_path: ./abis/MorphoBlue.json
+    abi_file_path: ./abi/MorphoBlue.json
     handler: ./src/handlers/MorphoBlue.ts
     events:
       - event: CreateMarket(bytes32 indexed id, (address, address, address, address, uint256) marketParams)
@@ -25,23 +25,23 @@ contracts:
       - event: SetAuthorization(address indexed caller, address indexed authorizer, address indexed authorized, bool
           newIsAuthorized)
   - name: MetaMorphoFactory
-    abi_file_path: ./abis/MetaMorphoFactory.json
+    abi_file_path: ./abi/MetaMorphoFactory.json
     handler: ./src/handlers/MetaMorpho.ts
     events:
       - event: CreateMetaMorpho(address indexed metaMorpho, address indexed caller, address initialOwner, uint256
           initialTimelock, address indexed asset, string name, string symbol, bytes32 salt)
   - name: MetaMorpho
-    abi_file_path: ./abis/MetaMorpho.json
+    abi_file_path: ./abi/MetaMorpho.json
     handler: ./src/handlers/MetaMorpho.ts
     events:
       - event: SetWithdrawQueue(address indexed caller, bytes32[] newWithdrawQueue)
   - name: AdaptiveCurveIRM
-    abi_file_path: ./abis/AdaptiveCurveIrm.json
+    abi_file_path: ./abi/AdaptiveCurveIrm.json
     handler: ./src/handlers/AdaptiveCurveIrm.ts
     events:
       - event: BorrowRateUpdate(bytes32 indexed id, uint256 avgBorrowRate, uint256 rateAtTarget)
   - name: PreLiquidationFactory
-    abi_file_path: ./abis/PreLiquidationFactory.json
+    abi_file_path: ./abi/PreLiquidationFactory.json
     handler: ./src/handlers/PreLiquidationFactory.ts
     events:
       - event: CreatePreLiquidation(address indexed preLiquidation, bytes32 id, (uint256, uint256, uint256, uint256, uint256,
