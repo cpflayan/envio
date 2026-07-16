@@ -1,27 +1,30 @@
 # yaml-language-server: $schema=./node_modules/envio/evm.schema.json
+# HyperIndex / Envio format: top-level contracts + chains (same shape as Morpho indexer).
+# Addresses: docs/aave/aave-base-addresses.md
 name: aave-v3-base-liquidation-indexer
 description: Index Aave V3 Pool borrower activity on Base for liquidation candidate discovery
-schema: ./schema.graphql
 
-# Need tx hash for LiquidationEvent ids (block number/timestamp are default)
+# Optional: include tx hash on events (LiquidationEvent id). Ignore if CLI rejects unknown keys.
 field_selection:
   transaction_fields:
     - hash
 
-# Addresses: docs/aave/aave-base-addresses.md + @aave-dao/aave-address-book
-networks:
+contracts:
+  - name: AavePool
+    handler: ./src/EventHandlers.ts
+    events:
+      - event: Borrow(address indexed reserve, address user, address indexed onBehalfOf, uint256 amount, uint8 interestRateMode, uint256 borrowRate, uint16 indexed referralCode)
+      - event: Supply(address indexed reserve, address user, address indexed onBehalfOf, uint256 amount, uint16 indexed referralCode)
+      - event: Repay(address indexed reserve, address indexed user, address indexed repayer, uint256 amount, bool useATokens)
+      - event: Withdraw(address indexed reserve, address indexed user, address indexed to, uint256 amount)
+      - event: LiquidationCall(address indexed collateralAsset, address indexed debtAsset, address indexed user, uint256 debtToCover, uint256 liquidatedCollateralAmount, address liquidator, bool receiveAToken)
+
+chains:
   - id: 8453 # Base mainnet
-    # Approximate; re-verify Pool create block on Basescan before production resync.
-    # Prefer slightly early over late (late start drops early borrowers).
+    # Chain-level start; contract can override. Prefer early over late.
     start_block: 12087000
     contracts:
       - name: AavePool
         address:
-          - "0xA238Dd80C259a72e81d7e4664a9801593F98d1c5" # Aave V3 Pool Proxy (Base)
-        handler: src/EventHandlers.ts
-        events:
-          - event: Borrow(address indexed reserve, address user, address indexed onBehalfOf, uint256 amount, uint8 interestRateMode, uint256 borrowRate, uint16 indexed referralCode)
-          - event: Supply(address indexed reserve, address user, address indexed onBehalfOf, uint256 amount, uint16 indexed referralCode)
-          - event: Repay(address indexed reserve, address indexed user, address indexed repayer, uint256 amount, bool useATokens)
-          - event: Withdraw(address indexed reserve, address indexed user, address indexed to, uint256 amount)
-          - event: LiquidationCall(address indexed collateralAsset, address indexed debtAsset, address indexed user, uint256 debtToCover, uint256 liquidatedCollateralAmount, address liquidator, bool receiveAToken)
+          - "0xA238Dd80C259a72e81d7e4664a9801593F98d1c5" # Aave V3 Pool Proxy (Base) — full 40 hex
+        start_block: 12087000
