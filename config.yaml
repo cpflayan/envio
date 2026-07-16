@@ -1,3 +1,4 @@
+
 # yaml-language-server: $schema=./node_modules/envio/evm.schema.json
 # Morpho Blue HyperIndex (Base)
 # Contract names MUST match src/handlers/* (Morpho, MetaMorpho, …)
