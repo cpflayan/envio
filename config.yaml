@@ -32,6 +32,7 @@ contracts:
     events:
       - event: CreateMetaMorpho(address indexed metaMorpho, address indexed caller, address initialOwner, uint256 initialTimelock, address indexed asset, string name, string symbol, bytes32 salt)
 
+
   - name: MetaMorpho
     abi_file_path: ./abis/MetaMorpho.json
     handler: ./src/handlers/MetaMorpho.ts
